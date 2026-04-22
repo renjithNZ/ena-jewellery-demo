@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6f2ee"/>
+      <stop offset="100%" stop-color="#e9dfd7"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="300" cy="260" r="24" fill="#ffffff" stroke="#d8dee5" stroke-width="10"/>
+  <circle cx="500" cy="260" r="24" fill="#ffffff" stroke="#d8dee5" stroke-width="10"/>
+  <path d="M300 300 L260 430 L300 500 L340 430 Z" fill="#e8f1f7" stroke="#bfd1de" stroke-width="12"/>
+  <path d="M500 300 L460 430 L500 500 L540 430 Z" fill="#e8f1f7" stroke="#bfd1de" stroke-width="12"/>
+  <text x="400" y="880" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#4a4036">Drop Earrings</text>
+</svg>

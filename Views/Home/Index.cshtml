@@ -1,0 +1,189 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    var featured = ViewBag.Featured as List<EnaStore.Models.Product> ?? new();
+    var bestsellers = ViewBag.Bestsellers as List<EnaStore.Models.Product> ?? new();
+}
+
+<!-- HERO -->
+<section class="ena-hero">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 ena-hero-content py-5">
+                <div class="ena-hero-eyebrow">New Collection 2026</div>
+                <h1>Jewellery That<br/>Tells Your Story</h1>
+                <p>Handcrafted pieces in gold, silver and precious stones. Each piece is made with care and designed to last a lifetime.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a asp-controller="Shop" asp-action="Index" class="btn-gold">Shop Now</a>
+                    <a asp-controller="Shop" asp-action="Index" asp-route-category="rings" class="btn-outline-gold" style="color:#e8d48b;border-color:#e8d48b;">Explore Rings</a>
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-flex justify-content-end py-5">
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:400px;width:100%">
+                    @foreach (var p in featured.Take(4))
+                    {
+                        <a asp-controller="Shop" asp-action="Details" asp-route-slug="@p.Slug" style="aspect-ratio:1;overflow:hidden;border-radius:4px;display:block">
+                            <img src="@p.ImageUrl" alt="@p.Name" style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s" onmouseover="this.style.transform='scale(1.06)'" onmouseout="this.style.transform='scale(1)'">
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST BADGES -->
+<section class="trust-badges-row">
+    <div class="container">
+        <div class="row g-2">
+            <div class="col-6 col-md-3">
+                <div class="trust-item">
+                    <div class="trust-item-icon">💎</div>
+                    <div class="trust-item-title">Certified Quality</div>
+                    <div class="trust-item-desc">Responsibly crafted in fine metals</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="trust-item">
+                    <div class="trust-item-icon">🚚</div>
+                    <div class="trust-item-title">Free Shipping</div>
+                    <div class="trust-item-desc">Australia-wide over $250</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="trust-item">
+                    <div class="trust-item-icon">↩️</div>
+                    <div class="trust-item-title">30-Day Returns</div>
+                    <div class="trust-item-desc">Hassle-free returns</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="trust-item">
+                    <div class="trust-item-icon">🔒</div>
+                    <div class="trust-item-title">Secure Payment</div>
+                    <div class="trust-item-desc">256-bit encryption</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SHOP BY CATEGORY -->
+<section class="py-5">
+    <div class="container">
+        <div class="text-center mb-4">
+            <div class="section-eyebrow">Collections</div>
+            <h2 class="section-title">Shop by Category</h2>
+        </div>
+        <div class="row g-3">
+            @{
+                var categories = new[]
+                {
+                    ("rings", "Rings", "Solitaires, Bands &amp; More"),
+                    ("necklaces", "Necklaces", "Pendants, Chains &amp; Strands"),
+                    ("earrings", "Earrings", "Studs, Hoops &amp; Drops"),
+                    ("bracelets", "Bracelets", "Bangles, Chains &amp; Cuffs")
+                };
+                var catImages = new[] {
+                    "/images/products/rings-a.svg",
+                    "/images/products/necklaces-a.svg",
+                    "/images/products/earrings-a.svg",
+                    "/images/products/bracelets-a.svg"
+                };
+                int ci = 0;
+            }
+            @foreach (var (slug, name, desc) in categories)
+            {
+                <div class="col-6 col-md-3">
+                    <a class="category-card" asp-controller="Shop" asp-action="Index" asp-route-category="@slug">
+                        <img src="@catImages[ci]" alt="@name" loading="lazy">
+                        <div class="category-card-overlay">
+                            <h5>@name</h5>
+                            <small>@Html.Raw(desc)</small>
+                        </div>
+                    </a>
+                </div>
+                ci++;
+            }
+        </div>
+    </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section class="py-5 bg-cream">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-end mb-4">
+            <div>
+                <div class="section-eyebrow">Handpicked</div>
+                <h2 class="section-title mb-0">Featured Pieces</h2>
+            </div>
+            <a asp-controller="Shop" asp-action="Index" class="btn-outline-gold" style="padding:10px 22px">View All</a>
+        </div>
+        <div class="row g-4">
+            @foreach (var p in featured.Take(8))
+            {
+                <div class="col-6 col-md-3">
+                    <div class="product-card">
+                        @if (p.IsBestseller)
+                        {
+                            <span class="product-badge bestseller">Bestseller</span>
+                        }
+                        else if (p.IsFeatured)
+                        {
+                            <span class="product-badge">Featured</span>
+                        }
+                        <a asp-controller="Shop" asp-action="Details" asp-route-slug="@p.Slug">
+                            <div class="product-card-img">
+                                <img src="@p.ImageUrl" alt="@p.Name" loading="lazy">
+                            </div>
+                        </a>
+                        <div class="product-category">@p.Category</div>
+                        <h6><a asp-controller="Shop" asp-action="Details" asp-route-slug="@p.Slug">@p.Name</a></h6>
+                        <div class="star-rating">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                @(i <= Math.Round(p.Rating) ? "★" : "☆")
+                            }
+                            <span class="text-muted ms-1" style="font-size:11px">(@p.ReviewCount)</span>
+                        </div>
+                        <div class="product-price mt-1">$@p.Price.ToString("N0")</div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- BESTSELLERS BANNER -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4 align-items-center">
+            <div class="col-md-5">
+                @if (bestsellers.Any())
+                {
+                    <img src="@bestsellers.First().ImageUrl" alt="Bestseller" class="w-100 rounded" style="aspect-ratio:1;object-fit:cover">
+                }
+            </div>
+            <div class="col-md-7">
+                <div class="section-eyebrow">Most Loved</div>
+                <h2 class="section-title">Customer Favourites</h2>
+                <p class="text-muted mb-4">Our most-loved pieces, chosen by thousands of happy customers.</p>
+                <div class="row g-3">
+                    @foreach (var p in bestsellers.Take(4))
+                    {
+                        <div class="col-6">
+                            <a asp-controller="Shop" asp-action="Details" asp-route-slug="@p.Slug" class="d-flex gap-3 align-items-center text-decoration-none">
+                                <img src="@p.ImageUrl" alt="@p.Name" style="width:64px;height:80px;object-fit:cover;border-radius:4px;flex-shrink:0">
+                                <div>
+                                    <div style="font-size:13px;font-weight:600;color:var(--dark)">@p.Name</div>
+                                    <div class="text-gold" style="font-weight:700">$@p.Price.ToString("N0")</div>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+                <a asp-controller="Shop" asp-action="Index" class="btn-gold mt-4 d-inline-block">Shop All</a>
+            </div>
+        </div>
+    </div>
+</section>
+

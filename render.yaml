@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: ena-jewellery-demo
+    env: docker
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /

@@ -1,0 +1,125 @@
+@model List<EnaStore.Models.CartItem>
+@{
+    ViewData["Title"] = "Your Cart";
+    decimal subtotal = ViewBag.Subtotal ?? 0m;
+    decimal shipping = ViewBag.ShippingCost ?? 0m;
+    decimal total = subtotal + shipping;
+}
+
+<div class="cart-section py-5">
+    <div class="container">
+        <h1 class="section-title mb-4">Your Cart</h1>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5">
+                <div style="font-size:56px">🛒</div>
+                <h4 class="mt-3">Your cart is empty</h4>
+                <p class="text-muted">Add some beautiful jewellery to get started.</p>
+                <a asp-controller="Shop" asp-action="Index" class="btn-gold">Browse Collections</a>
+            </div>
+        }
+        else
+        {
+            <div class="row g-5">
+                <!-- CART ITEMS -->
+                <div class="col-lg-8">
+                    @foreach (var item in Model)
+                    {
+                        <div class="d-flex gap-3 mb-4 pb-4" style="border-bottom:1px solid var(--border)">
+                            <img src="@item.ImageUrl" alt="@item.ProductName" class="cart-item-img">
+                            <div class="flex-grow-1">
+                                <h6 class="mb-1">@item.ProductName</h6>
+                                @if (!string.IsNullOrEmpty(item.SelectedSize))
+                                {
+                                    <div class="text-muted" style="font-size:12px">Size: @item.SelectedSize</div>
+                                }
+                                @if (!string.IsNullOrEmpty(item.SelectedMetal))
+                                {
+                                    <div class="text-muted" style="font-size:12px">Metal: @item.SelectedMetal</div>
+                                }
+                                <div class="product-price mt-1">$@item.Price.ToString("N0") each</div>
+
+                                <div class="d-flex align-items-center gap-3 mt-2">
+                                    <!-- UPDATE QTY -->
+                                    <form asp-controller="Cart" asp-action="Update" method="post" class="d-flex align-items-center gap-2">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@item.ProductId">
+                                        <input type="hidden" name="size" value="@item.SelectedSize">
+                                        <input type="hidden" name="metal" value="@item.SelectedMetal">
+                                        <input type="number" name="quantity" value="@item.Quantity" min="1" max="10"
+                                               class="form-control qty-input" onchange="this.form.submit()">
+                                    </form>
+                                    <!-- REMOVE -->
+                                    <form asp-controller="Cart" asp-action="Remove" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="productId" value="@item.ProductId">
+                                        <input type="hidden" name="size" value="@item.SelectedSize">
+                                        <input type="hidden" name="metal" value="@item.SelectedMetal">
+                                        <button type="submit" class="btn btn-link text-danger p-0" style="font-size:13px">Remove</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="text-end" style="min-width:80px">
+                                <div class="product-price">$@item.LineTotal.ToString("N0")</div>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-controller="Shop" asp-action="Index" class="btn-outline-gold" style="padding:10px 20px;font-size:12px">← Continue Shopping</a>
+                        <form asp-controller="Cart" asp-action="Clear" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-link text-muted" style="font-size:12px">Clear Cart</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ORDER SUMMARY -->
+                <div class="col-lg-4">
+                    <div class="order-summary-card">
+                        <h5 class="mb-4" style="font-size:1.1rem">Order Summary</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <span>$@subtotal.ToString("N0")</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping</span>
+                            <span>
+                                @if (shipping == 0)
+                                {
+                                    <span class="text-success fw-semibold">Free</span>
+                                }
+                                else
+                                {
+                                    <span>$@shipping.ToString("N0")</span>
+                                }
+                            </span>
+                        </div>
+                        @if (shipping > 0)
+                        {
+                            <div class="text-muted mb-2" style="font-size:12px">
+                                Add $@((250 - subtotal).ToString("N0")) more for free shipping
+                            </div>
+                        }
+                        <hr>
+                        <div class="d-flex justify-content-between fw-bold mb-4" style="font-size:1.1rem">
+                            <span>Total</span>
+                            <span>$@total.ToString("N0")</span>
+                        </div>
+                        <a asp-controller="Checkout" asp-action="Index" class="btn-gold d-block text-center" style="padding:14px">
+                            Proceed to Checkout →
+                        </a>
+                        <div class="text-center mt-3" style="font-size:11px;color:var(--muted)">
+                            🔒 Secure checkout &nbsp;|&nbsp; 🚚 Fast delivery
+                        </div>
+                        <hr class="my-3">
+                        <div class="text-muted" style="font-size:12px">
+                            <strong>Demo coupon:</strong> Use <code>ENA10</code> at checkout for 10% off
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

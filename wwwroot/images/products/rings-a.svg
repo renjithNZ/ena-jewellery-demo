@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7f1e7"/>
+      <stop offset="100%" stop-color="#e9decd"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#e7d292"/>
+      <stop offset="100%" stop-color="#b88b1d"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <circle cx="400" cy="570" r="135" fill="none" stroke="url(#gold)" stroke-width="40"/>
+  <polygon points="400,260 470,390 400,470 330,390" fill="#ffffff" stroke="#d7dce2" stroke-width="14"/>
+  <circle cx="400" cy="390" r="28" fill="#f7fbff" opacity="0.85"/>
+  <text x="400" y="880" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#4a4036">Solitaire Ring</text>
+</svg>

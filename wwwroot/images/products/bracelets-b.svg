@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f5f2ef"/>
+      <stop offset="100%" stop-color="#e8ddd4"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <path d="M220 500 C280 360, 520 360, 580 500" fill="none" stroke="#cfcfd5" stroke-width="24" stroke-linecap="round"/>
+  <circle cx="270" cy="470" r="18" fill="#fff8f6" stroke="#d6b3a7" stroke-width="8"/>
+  <circle cx="400" cy="430" r="18" fill="#fff8f6" stroke="#d6b3a7" stroke-width="8"/>
+  <circle cx="530" cy="470" r="18" fill="#fff8f6" stroke="#d6b3a7" stroke-width="8"/>
+  <text x="400" y="880" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#4a4036">Charm Bracelet</text>
+</svg>

@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@(ViewData["Title"] != null ? ViewData["Title"] + " — " : "")ENA Jewellery</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body>
+
+<header class="ena-header">
+    <div class="ena-topbar">
+        <span>✨ Free Australia-wide shipping on orders over $250 &nbsp;|&nbsp; Use code <strong>ENA10</strong> for 10% off</span>
+    </div>
+    <nav class="navbar navbar-expand-lg ena-nav">
+        <div class="container">
+            <a class="navbar-brand ena-logo" asp-controller="Home" asp-action="Index">ENA</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Shop" asp-action="Index">All Jewellery</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Shop" asp-action="Index" asp-route-category="rings">Rings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Shop" asp-action="Index" asp-route-category="necklaces">Necklaces</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Shop" asp-action="Index" asp-route-category="earrings">Earrings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Shop" asp-action="Index" asp-route-category="bracelets">Bracelets</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <a asp-controller="Admin" asp-action="Index" class="nav-link ena-admin-link">Admin ⚙</a>
+                    <a asp-controller="Cart" asp-action="Index" class="ena-cart-btn">
+                        🛒
+                        @{
+                            var cartCount = CartService.GetCartCount();
+                        }
+                        @if (cartCount > 0)
+                        {
+                            <span class="cart-badge">@cartCount</span>
+                        }
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main>
+    @if (TempData["AddedToCart"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show mb-0 text-center rounded-0" role="alert">
+            <strong>@TempData["AddedToCart"]</strong> added to your cart. &nbsp;
+            <a asp-controller="Cart" asp-action="Index" class="alert-link">View Cart →</a>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+    @RenderBody()
+</main>
+
+<footer class="ena-footer">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="ena-footer-brand">ENA</div>
+                <p class="mt-2 text-muted small">Handcrafted jewellery made with love, designed for you. Every piece tells a story.</p>
+            </div>
+            <div class="col-md-2">
+                <h6 class="fw-semibold mb-3">Shop</h6>
+                <ul class="list-unstyled footer-links">
+                    <li><a asp-controller="Shop" asp-action="Index" asp-route-category="rings">Rings</a></li>
+                    <li><a asp-controller="Shop" asp-action="Index" asp-route-category="necklaces">Necklaces</a></li>
+                    <li><a asp-controller="Shop" asp-action="Index" asp-route-category="earrings">Earrings</a></li>
+                    <li><a asp-controller="Shop" asp-action="Index" asp-route-category="bracelets">Bracelets</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6 class="fw-semibold mb-3">Help</h6>
+                <ul class="list-unstyled footer-links">
+                    <li><a href="#">Shipping &amp; Returns</a></li>
+                    <li><a href="#">Size Guide</a></li>
+                    <li><a href="#">Care Instructions</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="col-md-3">
+                <h6 class="fw-semibold mb-3">We Promise</h6>
+                <div class="d-flex flex-column gap-1">
+                    <span class="trust-badge">✅ Certified Jewellery</span>
+                    <span class="trust-badge">🚚 Free shipping over $250</span>
+                    <span class="trust-badge">↩️ 30-Day Returns</span>
+                    <span class="trust-badge">🔒 Secure Checkout</span>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-4">
+        <p class="text-center text-muted small mb-0">© @DateTime.Now.Year ENA Jewellery. All rights reserved. &nbsp;|&nbsp; Demo Build</p>
+    </div>
+</footer>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

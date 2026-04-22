@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbf5f0"/>
+      <stop offset="100%" stop-color="#f0e3d7"/>
+    </linearGradient>
+    <linearGradient id="rose" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#efc0b4"/>
+      <stop offset="100%" stop-color="#b76a5c"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <path d="M275 590 C275 470, 525 470, 525 590 C525 710, 275 710, 275 590Z" fill="none" stroke="url(#rose)" stroke-width="34"/>
+  <path d="M305 520 C350 470, 450 470, 495 520" fill="none" stroke="#d9b4aa" stroke-width="20" stroke-linecap="round"/>
+  <circle cx="335" cy="515" r="18" fill="#fff6f1" stroke="#ead2ca" stroke-width="8"/>
+  <circle cx="400" cy="490" r="20" fill="#fff6f1" stroke="#ead2ca" stroke-width="8"/>
+  <circle cx="465" cy="515" r="18" fill="#fff6f1" stroke="#ead2ca" stroke-width="8"/>
+  <text x="400" y="880" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#5c433b">Statement Ring</text>
+</svg>

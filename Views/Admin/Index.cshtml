@@ -1,0 +1,113 @@
+@{
+    ViewData["Title"] = "Admin Dashboard";
+    int totalOrders = ViewBag.TotalOrders ?? 0;
+    decimal totalRevenue = ViewBag.TotalRevenue ?? 0m;
+    int totalProducts = ViewBag.TotalProducts ?? 0;
+    int lowStockCount = ViewBag.LowStockCount ?? 0;
+    var recentOrders = ViewBag.RecentOrders as List<EnaStore.Models.Order> ?? new();
+}
+
+<div class="admin-header">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h4>ENA Admin Panel</h4>
+        <div class="d-flex gap-3">
+            <a asp-controller="Admin" asp-action="Products" class="btn-outline-gold" style="padding:8px 20px;font-size:12px;color:#e8d48b;border-color:#e8d48b">Products</a>
+            <a asp-controller="Admin" asp-action="Orders" class="btn-outline-gold" style="padding:8px 20px;font-size:12px;color:#e8d48b;border-color:#e8d48b">Orders</a>
+            <a asp-controller="Home" asp-action="Index" class="btn-outline-gold" style="padding:8px 20px;font-size:12px;color:#e8d48b;border-color:#e8d48b">View Store</a>
+        </div>
+    </div>
+</div>
+
+<div class="container pb-5">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- STATS -->
+    <div class="row g-4 mb-5">
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="stat-card-value">@totalOrders</div>
+                <div class="stat-card-label">Total Orders</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card" style="border-left-color:#2e7d32">
+                <div class="stat-card-value">$@totalRevenue.ToString("N0")</div>
+                <div class="stat-card-label">Total Revenue</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card" style="border-left-color:#1565c0">
+                <div class="stat-card-value">@totalProducts</div>
+                <div class="stat-card-label">Products</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card" style="border-left-color:@(lowStockCount > 0 ? "#f57f17" : "#00695c")">
+                <div class="stat-card-value">@lowStockCount</div>
+                <div class="stat-card-label">Low Stock Items</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RECENT ORDERS -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 style="font-size:1.3rem">Recent Orders</h3>
+        <a asp-controller="Admin" asp-action="Orders" class="btn-outline-gold" style="padding:8px 20px;font-size:12px">View All</a>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table admin-table">
+            <thead>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Items</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in recentOrders)
+                {
+                    <tr>
+                        <td><code style="font-size:12px">@order.OrderId</code></td>
+                        <td>
+                            <div style="font-weight:600;font-size:14px">@order.CustomerName</div>
+                            <div class="text-muted" style="font-size:12px">@order.CustomerEmail</div>
+                        </td>
+                        <td style="font-size:13px">@order.PlacedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                        <td style="font-size:13px">@order.Items.Count item(s)</td>
+                        <td style="font-weight:700">$@order.Total.ToString("N0")</td>
+                        <td><span class="status-badge status-@order.Status">@order.Status</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- QUICK LINKS -->
+    <div class="row g-4 mt-3">
+        <div class="col-md-6">
+            <div class="stat-card h-100">
+                <h5 style="font-size:1rem;margin-bottom:12px">🛍 Manage Products</h5>
+                <p class="text-muted" style="font-size:13px">Update stock levels, view all products by category.</p>
+                <a asp-controller="Admin" asp-action="Products" class="btn-gold" style="padding:10px 20px;font-size:12px">Go to Products</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="stat-card h-100">
+                <h5 style="font-size:1rem;margin-bottom:12px">📦 Manage Orders</h5>
+                <p class="text-muted" style="font-size:13px">Update order status and view full order details.</p>
+                <a asp-controller="Admin" asp-action="Orders" class="btn-gold" style="padding:10px 20px;font-size:12px">Go to Orders</a>
+            </div>
+        </div>
+    </div>
+</div>

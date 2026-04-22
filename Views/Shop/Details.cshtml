@@ -1,0 +1,162 @@
+@model EnaStore.Models.Product
+@{
+    ViewData["Title"] = Model.Name;
+    var related = ViewBag.Related as List<EnaStore.Models.Product> ?? new();
+}
+
+<div class="container py-5">
+
+    <!-- BREADCRUMB -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb" style="font-size:13px">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Shop" asp-action="Index" asp-route-category="@Model.Category">@System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Model.Category)</a></li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <!-- IMAGE -->
+        <div class="col-md-6">
+            <img src="@Model.ImageUrl" alt="@Model.Name" class="product-detail-img">
+        </div>
+
+        <!-- DETAILS -->
+        <div class="col-md-6">
+            <div class="product-category mb-1">@Model.Category</div>
+            <h1 style="font-size:2rem">@Model.Name</h1>
+
+            <div class="star-rating mb-2">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    @(i <= Math.Round(Model.Rating) ? "★" : "☆")
+                }
+                <span class="text-muted ms-1" style="font-size:12px">@Model.Rating.ToString("F1") / @Model.ReviewCount reviews</span>
+            </div>
+
+            <div class="product-detail-price mb-3">$@Model.Price.ToString("N0")</div>
+
+            <p class="text-muted mb-4" style="font-size:15px">@Model.Description</p>
+
+            <hr class="my-3" style="border-color:var(--border)">
+
+            <form asp-controller="Cart" asp-action="Add" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="productId" value="@Model.Id">
+
+                @if (Model.Sizes.Any())
+                {
+                    <div class="mb-4">
+                        <div class="filter-heading mb-2">Size</div>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var size in Model.Sizes)
+                            {
+                                <button type="button" class="variant-btn size-btn" data-value="@size">@size</button>
+                            }
+                        </div>
+                        <input type="hidden" name="size" id="selectedSize">
+                    </div>
+                }
+
+                @if (Model.MetalColors.Any())
+                {
+                    <div class="mb-4">
+                        <div class="filter-heading mb-2">Metal</div>
+                        <div class="d-flex flex-wrap gap-2">
+                            @foreach (var metal in Model.MetalColors)
+                            {
+                                <button type="button" class="variant-btn metal-btn" data-value="@metal">@metal</button>
+                            }
+                        </div>
+                        <input type="hidden" name="metal" id="selectedMetal">
+                    </div>
+                }
+
+                <div class="mb-4">
+                    <div class="filter-heading mb-2">Quantity</div>
+                    <input type="number" name="quantity" value="1" min="1" max="10" class="form-control qty-input">
+                </div>
+
+                @if (Model.InStock)
+                {
+                    <button type="submit" class="btn-gold w-100 d-block text-center" style="padding:16px">
+                        Add to Cart — $@Model.Price.ToString("N0")
+                    </button>
+                    <div class="text-muted text-center mt-2" style="font-size:12px">✅ In Stock (@Model.StockCount available)</div>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-secondary w-100" disabled>Out of Stock</button>
+                }
+            </form>
+
+            <hr class="my-4" style="border-color:var(--border)">
+
+            <!-- DETAILS TABLE -->
+            <div class="mb-3">
+                <div class="filter-heading mb-2">Product Details</div>
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    @foreach (var tag in Model.Material.Split(','))
+                    {
+                        <span class="material-badge">@tag.Trim()</span>
+                    }
+                </div>
+                <p style="font-size:13px;color:var(--muted)">
+                    <strong>Care:</strong> @Model.CareInfo
+                </p>
+            </div>
+
+            <!-- TRUST MINI -->
+            <div class="d-flex gap-4" style="font-size:12px;color:var(--muted)">
+                <span>🚚 Free Australia-wide shipping over $250</span>
+                <span>↩️ 30-day returns</span>
+                <span>🔒 Secure checkout</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RELATED PRODUCTS -->
+    @if (related.Any())
+    {
+        <div class="mt-5 pt-4" style="border-top:1px solid var(--border)">
+            <div class="section-eyebrow mb-1">You May Also Like</div>
+            <h3 class="section-title mb-4">More from @System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(Model.Category)</h3>
+            <div class="row g-4">
+                @foreach (var p in related)
+                {
+                    <div class="col-6 col-md-3">
+                        <div class="product-card">
+                            <a asp-controller="Shop" asp-action="Details" asp-route-slug="@p.Slug">
+                                <div class="product-card-img">
+                                    <img src="@p.ImageUrl" alt="@p.Name" loading="lazy">
+                                </div>
+                            </a>
+                            <div class="product-category">@p.Category</div>
+                            <h6><a asp-controller="Shop" asp-action="Details" asp-route-slug="@p.Slug">@p.Name</a></h6>
+                            <div class="product-price">$@p.Price.ToString("N0")</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+<script>
+    document.querySelectorAll('.size-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('selectedSize').value = btn.dataset.value;
+        });
+    });
+    document.querySelectorAll('.metal-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.metal-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('selectedMetal').value = btn.dataset.value;
+        });
+    });
+</script>
+}

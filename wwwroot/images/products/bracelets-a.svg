@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8f3eb"/>
+      <stop offset="100%" stop-color="#eadfce"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#efd69a"/>
+      <stop offset="100%" stop-color="#b68418"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="1000" fill="url(#bg)"/>
+  <ellipse cx="400" cy="470" rx="220" ry="125" fill="none" stroke="url(#gold)" stroke-width="28"/>
+  <circle cx="220" cy="470" r="14" fill="#ffffff" stroke="#d8dfe6" stroke-width="6"/>
+  <circle cx="290" cy="410" r="14" fill="#ffffff" stroke="#d8dfe6" stroke-width="6"/>
+  <circle cx="400" cy="385" r="14" fill="#ffffff" stroke="#d8dfe6" stroke-width="6"/>
+  <circle cx="510" cy="410" r="14" fill="#ffffff" stroke="#d8dfe6" stroke-width="6"/>
+  <circle cx="580" cy="470" r="14" fill="#ffffff" stroke="#d8dfe6" stroke-width="6"/>
+  <text x="400" y="880" text-anchor="middle" font-family="Georgia, serif" font-size="46" fill="#4a4036">Tennis Bracelet</text>
+</svg>
