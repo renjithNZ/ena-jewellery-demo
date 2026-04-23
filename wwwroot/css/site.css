@@ -53,13 +53,27 @@ a:hover { color: var(--gold); }
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
 }
 
-.ena-logo {
+.ena-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ena-logo-img {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+    border-radius: 4px;
+}
+
+.ena-logo-text {
     font-family: var(--font-serif);
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
-    letter-spacing: 6px;
-    color: var(--dark) !important;
+    letter-spacing: 4px;
+    color: var(--dark);
     text-transform: uppercase;
+    line-height: 1;
 }
 
 .ena-nav .nav-link {
